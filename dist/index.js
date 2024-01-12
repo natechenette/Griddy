@@ -35,7 +35,6 @@ styleInject(css_248z);
 
 const DataGrid = ({ columns, rows, selectionMode = 'row', onRowSelection }) => {
     const [selectedRows, setSelectedRows] = React.useState([]);
-    const [selectedCell, setSelectedCell] = React.useState(null);
     const [selectAllChecked, setSelectAllChecked] = React.useState(false);
     React.useEffect(() => {
         // Determine the state of the header checkbox based on selectedRows
@@ -64,26 +63,24 @@ const DataGrid = ({ columns, rows, selectionMode = 'row', onRowSelection }) => {
             }
         });
     };
-    const handleCellClick = (rowIndex, columnIndex) => {
-        setSelectedCell({ row: rowIndex, column: columnIndex });
-        if (selectionMode === 'row') {
-            handleRowSelection(rowIndex);
-        }
-    };
     const handleCheckboxClick = (rowIndex) => {
-        if (selectionMode === 'checkbox') {
-            handleRowSelection(rowIndex);
-        }
-    };
-    const handleSelectAllRows = () => {
-        if (selectionMode === 'checkbox') {
-            const allRowsSelected = selectedRows.length === rows.length;
-            if (allRowsSelected) {
-                setSelectedRows([]);
+        setSelectedRows((prevSelectedRows) => {
+            const isSelected = prevSelectedRows.includes(rowIndex);
+            if (isSelected) {
+                return prevSelectedRows.filter((selectedRow) => selectedRow !== rowIndex);
             }
             else {
-                setSelectedRows([...Array(rows.length).keys()]);
+                return [...prevSelectedRows, rowIndex];
             }
+        });
+    };
+    const handleSelectAllRows = () => {
+        const allRowsSelected = selectedRows.length === rows.length;
+        if (allRowsSelected) {
+            setSelectedRows([]);
+        }
+        else {
+            setSelectedRows([...Array(rows.length).keys()]);
         }
     };
     return (React.createElement("div", { className: s.root },
@@ -97,10 +94,10 @@ const DataGrid = ({ columns, rows, selectionMode = 'row', onRowSelection }) => {
                                 }
                             } }))),
                     columns.map((column, columnIndex) => (React.createElement("th", { key: columnIndex }, column))))),
-            React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex, className: selectedRows.includes(rowIndex) ? s.selectedRow : '', onClick: () => handleRowSelection(rowIndex) },
+            React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex },
                 selectionMode === 'checkbox' && (React.createElement("td", null,
                     React.createElement("input", { type: "checkbox", checked: selectedRows.includes(rowIndex), onChange: () => handleCheckboxClick(rowIndex) }))),
-                row.map((cell, columnIndex) => (React.createElement("td", { key: columnIndex, className: (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.row) === rowIndex && (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.column) === columnIndex ? s.selectedCell : '', onClick: () => handleCellClick(rowIndex, columnIndex) }, cell))))))))));
+                row.map((cell, columnIndex) => (React.createElement("td", { key: columnIndex, className: selectedRows.includes(rowIndex) ? s.selectedRow : '', onClick: () => selectionMode === 'row' && handleRowSelection(rowIndex) }, cell))))))))));
 };
 
 exports.DataGrid = DataGrid;
