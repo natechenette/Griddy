@@ -11,6 +11,7 @@ type DataGridProps = {
 
 export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = false, onRowSelection }) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [selectedCell, setSelectedCell] = useState<{ row: number; column: number } | null>(null);
   const [selectAllChecked, setSelectAllChecked] = useState<boolean | 'indeterminate'>(false);
 
   useEffect(() => {
@@ -39,6 +40,10 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = 
         }
       });
     }
+  };
+
+  const handleCellClick = (rowIndex: number, columnIndex: number) => {
+    setSelectedCell({ row: rowIndex, column: columnIndex });
   };
 
   const handleSelectAllRows = () => {
@@ -71,14 +76,14 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = 
                 />
               </th>
             )}
-            {columns.map((column, index) => (
-              <th key={index}>{column}</th>
+            {columns.map((column, columnIndex) => (
+              <th key={columnIndex}>{column}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {rows.map((row, rowIndex) => (
-            <tr key={rowIndex} className={selectedRows.includes(rowIndex) ? s.selectedRow : ''}>
+            <tr key={rowIndex}>
               {selectable && (
                 <td>
                   <input
@@ -88,8 +93,14 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = 
                   />
                 </td>
               )}
-              {row.map((cell, cellIndex) => (
-                <td key={cellIndex}>{cell}</td>
+              {row.map((cell, columnIndex) => (
+                <td
+                  key={columnIndex}
+                  className={selectedCell?.row === rowIndex && selectedCell?.column === columnIndex ? s.selectedCell : ''}
+                  onClick={() => handleCellClick(rowIndex, columnIndex)}
+                >
+                  {cell}
+                </td>
               ))}
             </tr>
           ))}

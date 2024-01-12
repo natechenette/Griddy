@@ -29,12 +29,13 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z = ".styles-module_root__Xsw1F {\n  background: gold;\n}\n";
-var s = {"root":"styles-module_root__Xsw1F"};
+var css_248z = ".styles-module_root__Xsw1F {\n  background: white;\n}\n\n.styles-module_selectedRow__I5XIX {\n  background-color: gray;\n}\n\n.styles-module_selectedCell__O7VfT {\n  outline: 2px solid blue;\n}";
+var s = {"root":"styles-module_root__Xsw1F","selectedRow":"styles-module_selectedRow__I5XIX","selectedCell":"styles-module_selectedCell__O7VfT"};
 styleInject(css_248z);
 
 const DataGrid = ({ columns, rows, selectable = false, onRowSelection }) => {
     const [selectedRows, setSelectedRows] = React.useState([]);
+    const [selectedCell, setSelectedCell] = React.useState(null);
     const [selectAllChecked, setSelectAllChecked] = React.useState(false);
     React.useEffect(() => {
         // Determine the state of the header checkbox based on selectedRows
@@ -65,6 +66,9 @@ const DataGrid = ({ columns, rows, selectable = false, onRowSelection }) => {
             });
         }
     };
+    const handleCellClick = (rowIndex, columnIndex) => {
+        setSelectedCell({ row: rowIndex, column: columnIndex });
+    };
     const handleSelectAllRows = () => {
         if (selectable) {
             const allRowsSelected = selectedRows.length === rows.length;
@@ -86,11 +90,11 @@ const DataGrid = ({ columns, rows, selectable = false, onRowSelection }) => {
                                     input.indeterminate = selectAllChecked === 'indeterminate';
                                 }
                             } }))),
-                    columns.map((column, index) => (React.createElement("th", { key: index }, column))))),
-            React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex, className: selectedRows.includes(rowIndex) ? s.selectedRow : '' },
+                    columns.map((column, columnIndex) => (React.createElement("th", { key: columnIndex }, column))))),
+            React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex },
                 selectable && (React.createElement("td", null,
                     React.createElement("input", { type: "checkbox", checked: selectedRows.includes(rowIndex), onChange: () => handleRowSelection(rowIndex) }))),
-                row.map((cell, cellIndex) => (React.createElement("td", { key: cellIndex }, cell))))))))));
+                row.map((cell, columnIndex) => (React.createElement("td", { key: columnIndex, className: (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.row) === rowIndex && (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.column) === columnIndex ? s.selectedCell : '', onClick: () => handleCellClick(rowIndex, columnIndex) }, cell))))))))));
 };
 
 exports.DataGrid = DataGrid;

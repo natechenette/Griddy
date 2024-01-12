@@ -1,3 +1,11 @@
 .root {
-  background: gold;
+  background: white;
+}
+
+.selectedRow {
+  background-color: gray;
+}
+
+.selectedCell {
+  outline: 2px solid blue;
 }
