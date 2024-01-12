@@ -50,21 +50,19 @@ const DataGrid = ({ columns, rows, selectable = false, onRowSelection }) => {
         }
     }, [selectedRows, rows]);
     const handleRowSelection = (rowIndex) => {
-        if (selectable) {
-            setSelectedRows((prevSelectedRows) => {
-                const isSelected = prevSelectedRows.includes(rowIndex);
-                if (isSelected) {
-                    const updatedSelectedRows = prevSelectedRows.filter((selectedRow) => selectedRow !== rowIndex);
-                    onRowSelection === null || onRowSelection === void 0 ? void 0 : onRowSelection(updatedSelectedRows);
-                    return updatedSelectedRows;
-                }
-                else {
-                    const updatedSelectedRows = [...prevSelectedRows, rowIndex];
-                    onRowSelection === null || onRowSelection === void 0 ? void 0 : onRowSelection(updatedSelectedRows);
-                    return updatedSelectedRows;
-                }
-            });
-        }
+        setSelectedRows((prevSelectedRows) => {
+            const isSelected = prevSelectedRows.includes(rowIndex);
+            if (isSelected) {
+                const updatedSelectedRows = prevSelectedRows.filter((selectedRow) => selectedRow !== rowIndex);
+                onRowSelection === null || onRowSelection === void 0 ? void 0 : onRowSelection(updatedSelectedRows);
+                return updatedSelectedRows;
+            }
+            else {
+                const updatedSelectedRows = [...prevSelectedRows, rowIndex];
+                onRowSelection === null || onRowSelection === void 0 ? void 0 : onRowSelection(updatedSelectedRows);
+                return updatedSelectedRows;
+            }
+        });
     };
     const handleCellClick = (rowIndex, columnIndex) => {
         setSelectedCell({ row: rowIndex, column: columnIndex });
@@ -91,7 +89,7 @@ const DataGrid = ({ columns, rows, selectable = false, onRowSelection }) => {
                                 }
                             } }))),
                     columns.map((column, columnIndex) => (React.createElement("th", { key: columnIndex }, column))))),
-            React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex },
+            React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex, className: selectedRows.includes(rowIndex) ? s.selectedRow : '', onClick: () => handleRowSelection(rowIndex) },
                 selectable && (React.createElement("td", null,
                     React.createElement("input", { type: "checkbox", checked: selectedRows.includes(rowIndex), onChange: () => handleRowSelection(rowIndex) }))),
                 row.map((cell, columnIndex) => (React.createElement("td", { key: columnIndex, className: (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.row) === rowIndex && (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.column) === columnIndex ? s.selectedCell : '', onClick: () => handleCellClick(rowIndex, columnIndex) }, cell))))))))));

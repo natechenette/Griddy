@@ -1,6 +1,6 @@
 {
   "name": "react-datagriddy",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A simple datagrid component writtten in typescript.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -20,7 +20,7 @@
     "typescript",
     "bottom-sheet"
   ],
-  "author": "Olga Stogova <helgastogova@gmail.com>",
+  "author": "Nate Chenette",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/natechenette/Griddy/issues"

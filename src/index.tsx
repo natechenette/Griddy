@@ -26,20 +26,18 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = 
   }, [selectedRows, rows]);
 
   const handleRowSelection = (rowIndex: number) => {
-    if (selectable) {
-      setSelectedRows((prevSelectedRows) => {
-        const isSelected = prevSelectedRows.includes(rowIndex);
-        if (isSelected) {
-          const updatedSelectedRows = prevSelectedRows.filter((selectedRow) => selectedRow !== rowIndex);
-          onRowSelection?.(updatedSelectedRows);
-          return updatedSelectedRows;
-        } else {
-          const updatedSelectedRows = [...prevSelectedRows, rowIndex];
-          onRowSelection?.(updatedSelectedRows);
-          return updatedSelectedRows;
-        }
-      });
-    }
+    setSelectedRows((prevSelectedRows) => {
+      const isSelected = prevSelectedRows.includes(rowIndex);
+      if (isSelected) {
+        const updatedSelectedRows = prevSelectedRows.filter((selectedRow) => selectedRow !== rowIndex);
+        onRowSelection?.(updatedSelectedRows);
+        return updatedSelectedRows;
+      } else {
+        const updatedSelectedRows = [...prevSelectedRows, rowIndex];
+        onRowSelection?.(updatedSelectedRows);
+        return updatedSelectedRows;
+      }
+    });
   };
 
   const handleCellClick = (rowIndex: number, columnIndex: number) => {
@@ -83,7 +81,11 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = 
         </thead>
         <tbody>
           {rows.map((row, rowIndex) => (
-            <tr key={rowIndex}>
+            <tr
+              key={rowIndex}
+              className={selectedRows.includes(rowIndex) ? s.selectedRow : ''}
+              onClick={() => handleRowSelection(rowIndex)}
+            >
               {selectable && (
                 <td>
                   <input
