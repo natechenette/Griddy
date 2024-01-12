@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import s from './styles.module.css';
 
@@ -10,6 +10,18 @@ type DataGridProps = {
 
 export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = false }) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [selectAllChecked, setSelectAllChecked] = useState<boolean | 'indeterminate'>(false);
+
+  useEffect(() => {
+    // Determine the state of the header checkbox based on selectedRows
+    if (selectedRows.length === 0) {
+      setSelectAllChecked(false);
+    } else if (selectedRows.length === rows.length) {
+      setSelectAllChecked(true);
+    } else {
+      setSelectAllChecked('indeterminate');
+    }
+  }, [selectedRows, rows]);
 
   const handleRowSelection = (rowIndex: number) => {
     if (selectable) {
@@ -44,8 +56,13 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = 
               <th>
                 <input
                   type="checkbox"
-                  checked={selectedRows.length === rows.length}
+                  checked={selectAllChecked === true}
                   onChange={handleSelectAllRows}
+                  ref={(input) => {
+                    if (input) {
+                      input.indeterminate = selectAllChecked === 'indeterminate';
+                    }
+                  }}
                 />
               </th>
             )}
