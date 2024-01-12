@@ -24,12 +24,31 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = 
     }
   };
 
+  const handleSelectAllRows = () => {
+    if (selectable) {
+      const allRowsSelected = selectedRows.length === rows.length;
+      if (allRowsSelected) {
+        setSelectedRows([]);
+      } else {
+        setSelectedRows([...Array(rows.length).keys()]);
+      }
+    }
+  };
+
   return (
     <div className={s.root}>
       <table>
         <thead>
           <tr>
-            {selectable && <th>Select</th>}
+            {selectable && (
+              <th>
+                <input
+                  type="checkbox"
+                  checked={selectedRows.length === rows.length}
+                  onChange={handleSelectAllRows}
+                />
+              </th>
+            )}
             {columns.map((column, index) => (
               <th key={index}>{column}</th>
             ))}
@@ -37,7 +56,7 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = 
         </thead>
         <tbody>
           {rows.map((row, rowIndex) => (
-            <tr key={rowIndex}>
+            <tr key={rowIndex} className={selectedRows.includes(rowIndex) ? s.selectedRow : ''}>
               {selectable && (
                 <td>
                   <input

@@ -48,13 +48,25 @@ const DataGrid = ({ columns, rows, selectable = false }) => {
             });
         }
     };
+    const handleSelectAllRows = () => {
+        if (selectable) {
+            const allRowsSelected = selectedRows.length === rows.length;
+            if (allRowsSelected) {
+                setSelectedRows([]);
+            }
+            else {
+                setSelectedRows([...Array(rows.length).keys()]);
+            }
+        }
+    };
     return (React.createElement("div", { className: s.root },
         React.createElement("table", null,
             React.createElement("thead", null,
                 React.createElement("tr", null,
-                    selectable && React.createElement("th", null, "Select"),
+                    selectable && (React.createElement("th", null,
+                        React.createElement("input", { type: "checkbox", checked: selectedRows.length === rows.length, onChange: handleSelectAllRows }))),
                     columns.map((column, index) => (React.createElement("th", { key: index }, column))))),
-            React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex },
+            React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex, className: selectedRows.includes(rowIndex) ? s.selectedRow : '' },
                 selectable && (React.createElement("td", null,
                     React.createElement("input", { type: "checkbox", checked: selectedRows.includes(rowIndex), onChange: () => handleRowSelection(rowIndex) }))),
                 row.map((cell, cellIndex) => (React.createElement("td", { key: cellIndex }, cell))))))))));
