@@ -5,7 +5,7 @@ install:
 
 define rows and columns: 
 ```
-const columns = ['Name', 'Age', 'Country'];`
+const columns = ['Name', 'Age', 'Country'];
 const rows = [
     ['John', '25', 'USA'],
     ['Alice', '30', 'Canada'],
