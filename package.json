@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/helgastogova/npm-react-typescript-template"
+    "url": "https://github.com/natechenette/Griddy"
   },
   "keywords": [
     "react",
@@ -23,9 +23,9 @@
   "author": "Olga Stogova <helgastogova@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/helgastogova/npm-react-typescript-template/issues"
+    "url": "https://github.com/natechenette/Griddy/issues"
   },
-  "homepage": "https://github.com/helgastogova/npm-react-typescript-template#readme",
+  "homepage": "https://github.com/natechenette/Griddy",
   "peerDependencies": {
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0",
