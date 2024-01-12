@@ -29,8 +29,8 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z = ".styles-module_root__Xsw1F {\n  background: white;\n}\n\n.styles-module_selectedRow__I5XIX {\n  background-color: gray;\n}\n\n.styles-module_selectedCell__O7VfT {\n  outline: 2px solid blue;\n}";
-var s = {"root":"styles-module_root__Xsw1F","selectedRow":"styles-module_selectedRow__I5XIX","selectedCell":"styles-module_selectedCell__O7VfT"};
+var css_248z = ".styles-module_root__Xsw1F {\n  background: white;\n}\n\n.styles-module_activeRow__iVsQV {\n  background-color: gray;\n}\n\n.styles-module_activeCell__NnV4y {\n  outline: 2px solid blue;\n}";
+var s = {"root":"styles-module_root__Xsw1F","activeRow":"styles-module_activeRow__iVsQV","activeCell":"styles-module_activeCell__NnV4y"};
 styleInject(css_248z);
 
 const DataGrid = ({ columns, rows, selectionMode = 'row', onRowSelection, customRenderers, }) => {
@@ -101,11 +101,11 @@ const DataGrid = ({ columns, rows, selectionMode = 'row', onRowSelection, custom
                                 }
                             } }))),
                     columns.map((column, columnIndex) => (React.createElement("th", { key: columnIndex }, column))))),
-            React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex, className: selectedRows.includes(rowIndex) ? s.selectedRow : '', onClick: () => selectionMode === 'row' && handleRowSelection(rowIndex) },
+            React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex, className: `${s.selectedRow} ${selectedRows.includes(rowIndex) ? s.activeRow : ''}`, onClick: () => selectionMode === 'row' && handleRowSelection(rowIndex) },
                 selectionMode === 'checkbox' && (React.createElement("td", null,
                     React.createElement("input", { type: "checkbox", checked: selectedRows.includes(rowIndex), onChange: () => handleCheckboxClick(rowIndex) }))),
                 row.map((cell, columnIndex) => (React.createElement("td", { key: columnIndex, className: (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.row) === rowIndex && (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.column) === columnIndex
-                        ? s.selectedCell
+                        ? `${s.selectedCell} ${s.activeCell}`
                         : '', onClick: () => handleCellClick(rowIndex, columnIndex) }, (customRenderers === null || customRenderers === void 0 ? void 0 : customRenderers[columnIndex]) ? customRenderers[columnIndex](cell) : cell))))))))));
 };
 

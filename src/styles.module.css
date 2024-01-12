@@ -2,10 +2,10 @@
   background: white;
 }
 
-.selectedRow {
+.activeRow {
   background-color: gray;
 }
 
-.selectedCell {
+.activeCell {
   outline: 2px solid blue;
 }

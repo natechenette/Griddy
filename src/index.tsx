@@ -102,7 +102,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
           {rows.map((row, rowIndex) => (
             <tr
               key={rowIndex}
-              className={selectedRows.includes(rowIndex) ? s.selectedRow : ''}
+              className={`${s.selectedRow} ${selectedRows.includes(rowIndex) ? s.activeRow : ''}`}
               onClick={() => selectionMode === 'row' && handleRowSelection(rowIndex)}
             >
               {selectionMode === 'checkbox' && (
@@ -119,7 +119,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
                   key={columnIndex}
                   className={
                     selectedCell?.row === rowIndex && selectedCell?.column === columnIndex
-                      ? s.selectedCell
+                      ? `${s.selectedCell} ${s.activeCell}`
                       : ''
                   }
                   onClick={() => handleCellClick(rowIndex, columnIndex)}
