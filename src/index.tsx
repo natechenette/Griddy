@@ -18,6 +18,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
   customRenderers,
 }) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [selectedCell, setSelectedCell] = useState<{ row: number; column: number } | null>(null);
   const [selectAllChecked, setSelectAllChecked] = useState<boolean | 'indeterminate'>(false);
 
   useEffect(() => {
@@ -66,6 +67,13 @@ export const DataGrid: React.FC<DataGridProps> = ({
     }
   };
 
+  const handleCellClick = (rowIndex: number, columnIndex: number) => {
+    setSelectedCell({ row: rowIndex, column: columnIndex });
+    if (selectionMode === 'row') {
+      handleRowSelection(rowIndex);
+    }
+  };
+
   return (
     <div className={s.root}>
       <table>
@@ -92,7 +100,11 @@ export const DataGrid: React.FC<DataGridProps> = ({
         </thead>
         <tbody>
           {rows.map((row, rowIndex) => (
-            <tr key={rowIndex}>
+            <tr
+              key={rowIndex}
+              className={selectedRows.includes(rowIndex) ? s.selectedRow : ''}
+              onClick={() => selectionMode === 'row' && handleRowSelection(rowIndex)}
+            >
               {selectionMode === 'checkbox' && (
                 <td>
                   <input
@@ -105,8 +117,10 @@ export const DataGrid: React.FC<DataGridProps> = ({
               {row.map((cell, columnIndex) => (
                 <td
                   key={columnIndex}
-                  className={selectedRows.includes(rowIndex) ? s.selectedRow : ''}
-                  onClick={() => selectionMode === 'row' && handleRowSelection(rowIndex)}
+                  className={
+                    selectedRows.includes(rowIndex) && selectedCell?.column === columnIndex ? s.selectedCell : ''
+                  }
+                  onClick={() => handleCellClick(rowIndex, columnIndex)}
                 >
                   {customRenderers?.[columnIndex] ? customRenderers[columnIndex](cell) : cell}
                 </td>
