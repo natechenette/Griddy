@@ -7,9 +7,16 @@ type DataGridProps = {
   rows: string[][];
   selectionMode?: 'checkbox' | 'row';
   onRowSelection?: (selectedRows: number[]) => void;
+  customRenderers?: { [columnIndex: number]: (cellValue: string) => React.ReactNode };
 };
 
-export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectionMode = 'row', onRowSelection }) => {
+export const DataGrid: React.FC<DataGridProps> = ({
+  columns,
+  rows,
+  selectionMode = 'row',
+  onRowSelection,
+  customRenderers,
+}) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [selectAllChecked, setSelectAllChecked] = useState<boolean | 'indeterminate'>(false);
 
@@ -101,7 +108,7 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectionMode
                   className={selectedRows.includes(rowIndex) ? s.selectedRow : ''}
                   onClick={() => selectionMode === 'row' && handleRowSelection(rowIndex)}
                 >
-                  {cell}
+                  {customRenderers?.[columnIndex] ? customRenderers[columnIndex](cell) : cell}
                 </td>
               ))}
             </tr>

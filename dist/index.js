@@ -33,7 +33,7 @@ var css_248z = ".styles-module_root__Xsw1F {\n  background: white;\n}\n\n.styles
 var s = {"root":"styles-module_root__Xsw1F","selectedRow":"styles-module_selectedRow__I5XIX","selectedCell":"styles-module_selectedCell__O7VfT"};
 styleInject(css_248z);
 
-const DataGrid = ({ columns, rows, selectionMode = 'row', onRowSelection }) => {
+const DataGrid = ({ columns, rows, selectionMode = 'row', onRowSelection, customRenderers, }) => {
     const [selectedRows, setSelectedRows] = React.useState([]);
     const [selectAllChecked, setSelectAllChecked] = React.useState(false);
     React.useEffect(() => {
@@ -97,7 +97,7 @@ const DataGrid = ({ columns, rows, selectionMode = 'row', onRowSelection }) => {
             React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex },
                 selectionMode === 'checkbox' && (React.createElement("td", null,
                     React.createElement("input", { type: "checkbox", checked: selectedRows.includes(rowIndex), onChange: () => handleCheckboxClick(rowIndex) }))),
-                row.map((cell, columnIndex) => (React.createElement("td", { key: columnIndex, className: selectedRows.includes(rowIndex) ? s.selectedRow : '', onClick: () => selectionMode === 'row' && handleRowSelection(rowIndex) }, cell))))))))));
+                row.map((cell, columnIndex) => (React.createElement("td", { key: columnIndex, className: selectedRows.includes(rowIndex) ? s.selectedRow : '', onClick: () => selectionMode === 'row' && handleRowSelection(rowIndex) }, (customRenderers === null || customRenderers === void 0 ? void 0 : customRenderers[columnIndex]) ? customRenderers[columnIndex](cell) : cell))))))))));
 };
 
 exports.DataGrid = DataGrid;
