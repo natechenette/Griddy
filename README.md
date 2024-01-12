@@ -1,1 +1,5 @@
 # Griddy
+
+## License
+
+MIT
