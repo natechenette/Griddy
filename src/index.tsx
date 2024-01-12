@@ -118,7 +118,9 @@ export const DataGrid: React.FC<DataGridProps> = ({
                 <td
                   key={columnIndex}
                   className={
-                    selectedRows.includes(rowIndex) && selectedCell?.column === columnIndex ? s.selectedCell : ''
+                    selectedCell?.row === rowIndex && selectedCell?.column === columnIndex
+                      ? s.selectedCell
+                      : ''
                   }
                   onClick={() => handleCellClick(rowIndex, columnIndex)}
                 >

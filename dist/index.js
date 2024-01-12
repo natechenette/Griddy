@@ -104,7 +104,9 @@ const DataGrid = ({ columns, rows, selectionMode = 'row', onRowSelection, custom
             React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex, className: selectedRows.includes(rowIndex) ? s.selectedRow : '', onClick: () => selectionMode === 'row' && handleRowSelection(rowIndex) },
                 selectionMode === 'checkbox' && (React.createElement("td", null,
                     React.createElement("input", { type: "checkbox", checked: selectedRows.includes(rowIndex), onChange: () => handleCheckboxClick(rowIndex) }))),
-                row.map((cell, columnIndex) => (React.createElement("td", { key: columnIndex, className: selectedRows.includes(rowIndex) && (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.column) === columnIndex ? s.selectedCell : '', onClick: () => handleCellClick(rowIndex, columnIndex) }, (customRenderers === null || customRenderers === void 0 ? void 0 : customRenderers[columnIndex]) ? customRenderers[columnIndex](cell) : cell))))))))));
+                row.map((cell, columnIndex) => (React.createElement("td", { key: columnIndex, className: (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.row) === rowIndex && (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.column) === columnIndex
+                        ? s.selectedCell
+                        : '', onClick: () => handleCellClick(rowIndex, columnIndex) }, (customRenderers === null || customRenderers === void 0 ? void 0 : customRenderers[columnIndex]) ? customRenderers[columnIndex](cell) : cell))))))))));
 };
 
 exports.DataGrid = DataGrid;
