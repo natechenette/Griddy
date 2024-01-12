@@ -33,7 +33,7 @@ var css_248z = ".styles-module_root__Xsw1F {\n  background: gold;\n}\n";
 var s = {"root":"styles-module_root__Xsw1F"};
 styleInject(css_248z);
 
-const DataGrid = ({ columns, rows, selectable = false }) => {
+const DataGrid = ({ columns, rows, selectable = false, onRowSelection }) => {
     const [selectedRows, setSelectedRows] = React.useState([]);
     const [selectAllChecked, setSelectAllChecked] = React.useState(false);
     React.useEffect(() => {
@@ -53,10 +53,14 @@ const DataGrid = ({ columns, rows, selectable = false }) => {
             setSelectedRows((prevSelectedRows) => {
                 const isSelected = prevSelectedRows.includes(rowIndex);
                 if (isSelected) {
-                    return prevSelectedRows.filter((selectedRow) => selectedRow !== rowIndex);
+                    const updatedSelectedRows = prevSelectedRows.filter((selectedRow) => selectedRow !== rowIndex);
+                    onRowSelection === null || onRowSelection === void 0 ? void 0 : onRowSelection(updatedSelectedRows);
+                    return updatedSelectedRows;
                 }
                 else {
-                    return [...prevSelectedRows, rowIndex];
+                    const updatedSelectedRows = [...prevSelectedRows, rowIndex];
+                    onRowSelection === null || onRowSelection === void 0 ? void 0 : onRowSelection(updatedSelectedRows);
+                    return updatedSelectedRows;
                 }
             });
         }
