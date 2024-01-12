@@ -6,9 +6,10 @@ type DataGridProps = {
   columns: string[];
   rows: string[][];
   selectable?: boolean;
+  onRowSelection?: (selectedRows: number[]) => void;
 };
 
-export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = false }) => {
+export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = false, onRowSelection }) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [selectAllChecked, setSelectAllChecked] = useState<boolean | 'indeterminate'>(false);
 
@@ -28,9 +29,13 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = 
       setSelectedRows((prevSelectedRows) => {
         const isSelected = prevSelectedRows.includes(rowIndex);
         if (isSelected) {
-          return prevSelectedRows.filter((selectedRow) => selectedRow !== rowIndex);
+          const updatedSelectedRows = prevSelectedRows.filter((selectedRow) => selectedRow !== rowIndex);
+          onRowSelection?.(updatedSelectedRows);
+          return updatedSelectedRows;
         } else {
-          return [...prevSelectedRows, rowIndex];
+          const updatedSelectedRows = [...prevSelectedRows, rowIndex];
+          onRowSelection?.(updatedSelectedRows);
+          return updatedSelectedRows;
         }
       });
     }
