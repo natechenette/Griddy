@@ -5,11 +5,11 @@ import s from './styles.module.css';
 type DataGridProps = {
   columns: string[];
   rows: string[][];
-  selectable?: boolean;
+  selectionMode?: 'checkbox' | 'row';
   onRowSelection?: (selectedRows: number[]) => void;
 };
 
-export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = false, onRowSelection }) => {
+export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectionMode = 'row', onRowSelection }) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [selectedCell, setSelectedCell] = useState<{ row: number; column: number } | null>(null);
   const [selectAllChecked, setSelectAllChecked] = useState<boolean | 'indeterminate'>(false);
@@ -42,10 +42,19 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = 
 
   const handleCellClick = (rowIndex: number, columnIndex: number) => {
     setSelectedCell({ row: rowIndex, column: columnIndex });
+    if (selectionMode === 'row') {
+      handleRowSelection(rowIndex);
+    }
+  };
+
+  const handleCheckboxClick = (rowIndex: number) => {
+    if (selectionMode === 'checkbox') {
+      handleRowSelection(rowIndex);
+    }
   };
 
   const handleSelectAllRows = () => {
-    if (selectable) {
+    if (selectionMode === 'checkbox') {
       const allRowsSelected = selectedRows.length === rows.length;
       if (allRowsSelected) {
         setSelectedRows([]);
@@ -60,7 +69,7 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = 
       <table>
         <thead>
           <tr>
-            {selectable && (
+            {selectionMode === 'checkbox' && (
               <th>
                 <input
                   type="checkbox"
@@ -86,12 +95,12 @@ export const DataGrid: React.FC<DataGridProps> = ({ columns, rows, selectable = 
               className={selectedRows.includes(rowIndex) ? s.selectedRow : ''}
               onClick={() => handleRowSelection(rowIndex)}
             >
-              {selectable && (
+              {selectionMode === 'checkbox' && (
                 <td>
                   <input
                     type="checkbox"
                     checked={selectedRows.includes(rowIndex)}
-                    onChange={() => handleRowSelection(rowIndex)}
+                    onChange={() => handleCheckboxClick(rowIndex)}
                   />
                 </td>
               )}

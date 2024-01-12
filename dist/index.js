@@ -33,7 +33,7 @@ var css_248z = ".styles-module_root__Xsw1F {\n  background: white;\n}\n\n.styles
 var s = {"root":"styles-module_root__Xsw1F","selectedRow":"styles-module_selectedRow__I5XIX","selectedCell":"styles-module_selectedCell__O7VfT"};
 styleInject(css_248z);
 
-const DataGrid = ({ columns, rows, selectable = false, onRowSelection }) => {
+const DataGrid = ({ columns, rows, selectionMode = 'row', onRowSelection }) => {
     const [selectedRows, setSelectedRows] = React.useState([]);
     const [selectedCell, setSelectedCell] = React.useState(null);
     const [selectAllChecked, setSelectAllChecked] = React.useState(false);
@@ -66,9 +66,17 @@ const DataGrid = ({ columns, rows, selectable = false, onRowSelection }) => {
     };
     const handleCellClick = (rowIndex, columnIndex) => {
         setSelectedCell({ row: rowIndex, column: columnIndex });
+        if (selectionMode === 'row') {
+            handleRowSelection(rowIndex);
+        }
+    };
+    const handleCheckboxClick = (rowIndex) => {
+        if (selectionMode === 'checkbox') {
+            handleRowSelection(rowIndex);
+        }
     };
     const handleSelectAllRows = () => {
-        if (selectable) {
+        if (selectionMode === 'checkbox') {
             const allRowsSelected = selectedRows.length === rows.length;
             if (allRowsSelected) {
                 setSelectedRows([]);
@@ -82,7 +90,7 @@ const DataGrid = ({ columns, rows, selectable = false, onRowSelection }) => {
         React.createElement("table", null,
             React.createElement("thead", null,
                 React.createElement("tr", null,
-                    selectable && (React.createElement("th", null,
+                    selectionMode === 'checkbox' && (React.createElement("th", null,
                         React.createElement("input", { type: "checkbox", checked: selectAllChecked === true, onChange: handleSelectAllRows, ref: (input) => {
                                 if (input) {
                                     input.indeterminate = selectAllChecked === 'indeterminate';
@@ -90,8 +98,8 @@ const DataGrid = ({ columns, rows, selectable = false, onRowSelection }) => {
                             } }))),
                     columns.map((column, columnIndex) => (React.createElement("th", { key: columnIndex }, column))))),
             React.createElement("tbody", null, rows.map((row, rowIndex) => (React.createElement("tr", { key: rowIndex, className: selectedRows.includes(rowIndex) ? s.selectedRow : '', onClick: () => handleRowSelection(rowIndex) },
-                selectable && (React.createElement("td", null,
-                    React.createElement("input", { type: "checkbox", checked: selectedRows.includes(rowIndex), onChange: () => handleRowSelection(rowIndex) }))),
+                selectionMode === 'checkbox' && (React.createElement("td", null,
+                    React.createElement("input", { type: "checkbox", checked: selectedRows.includes(rowIndex), onChange: () => handleCheckboxClick(rowIndex) }))),
                 row.map((cell, columnIndex) => (React.createElement("td", { key: columnIndex, className: (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.row) === rowIndex && (selectedCell === null || selectedCell === void 0 ? void 0 : selectedCell.column) === columnIndex ? s.selectedCell : '', onClick: () => handleCellClick(rowIndex, columnIndex) }, cell))))))))));
 };
 

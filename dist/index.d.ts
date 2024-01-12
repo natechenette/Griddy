@@ -2,7 +2,7 @@ import React from 'react';
 type DataGridProps = {
     columns: string[];
     rows: string[][];
-    selectable?: boolean;
+    selectionMode?: 'checkbox' | 'row';
     onRowSelection?: (selectedRows: number[]) => void;
 };
 export declare const DataGrid: React.FC<DataGridProps>;
